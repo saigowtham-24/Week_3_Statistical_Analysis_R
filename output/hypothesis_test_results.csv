@@ -1,0 +1,5 @@
+test,null_hypothesis,statistic,degrees_freedom,p_value,interpretation
+Chi-square: Sex vs Survival,Sex and survival are independent,260.71702016732104,1,1.1973570627755645e-58,Reject H0 at alpha=0.05
+Chi-square: Passenger class vs Survival,Passenger class and survival are independent,102.88898875696056,2,4.549251711298793e-23,Reject H0 at alpha=0.05
+Mann–Whitney U: Age by survival outcome,Age distributions are equal for survivors and non-survivors,89779.5,,0.2696731214886362,Fail to reject H0
+Shapiro–Wilk: Age normality (n=891),Age values follow a normal distribution,0.9541046573646538,,4.651141686041376e-16,Reject normality at alpha=0.05

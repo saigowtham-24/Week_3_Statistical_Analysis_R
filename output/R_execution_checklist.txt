@@ -1,0 +1,6 @@
+Before final submission:
+1. Run statistical_analysis_week3.R in RStudio from the project root.
+2. Confirm no errors and check newly generated CSVs and plots.
+3. Verify model_comparison.csv contains metrics from the R run.
+4. Capture genuine screenshots of code, tests, CV, metrics, and diagnostics into screenshots/.
+5. Reconcile the report's preview-model paragraph with actual R results before submitting.
