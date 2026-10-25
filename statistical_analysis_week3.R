@@ -3,7 +3,7 @@
 # Run from the project root in RStudio.
 # Required packages: ggplot2, dplyr, tidyr, caret, randomForest, pROC
 
-required <- c("ggplot2", "dplyr", "tidyr", "caret", "randomForest", "pROC")
+required <- c("ggplot2", "scales", "dplyr", "tidyr", "caret", "randomForest", "pROC")
 missing_pkgs <- required[!vapply(required, requireNamespace, logical(1), quietly = TRUE)]
 if (length(missing_pkgs)) {
   install.packages(missing_pkgs, repos = "https://cloud.r-project.org")
@@ -225,3 +225,31 @@ cat("Dataset rows:", nrow(df), "\n")
 cat("Survival rate:", round(mean(df$Survived == "Yes") * 100, 2), "%\n")
 print(model_comparison)
 cat("Selected model by test ROC-AUC:", best_name, "\n")
+
+
+# Submission output names requested for the project package
+file.copy("outputs/missing_values_after.csv", "outputs/missing_values.csv", overwrite = TRUE)
+
+# Export permutation importance in a consistent two-column format.
+perm_imp <- tryCatch({
+  rf_imp <- randomForest::importance(rf_fit$finalModel, type = 1)
+  data.frame(feature = rownames(rf_imp), importance_mean = as.numeric(rf_imp[, 1]))
+}, error = function(e) data.frame(feature = character(), importance_mean = numeric()))
+write.csv(perm_imp, "outputs/permutation_importance.csv", row.names = FALSE)
+
+# Grouped survival plot used in the report.
+p_sex_class <- ggplot(df, aes(x = Pclass, fill = Survived)) +
+  geom_bar(position = "fill") + facet_wrap(~ Sex) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Survival Proportion by Sex and Passenger Class", x = "Passenger class", y = "Survival proportion")
+ggsave("plots/survival_by_sex_class.png", p_sex_class, width = 8, height = 5, dpi = 160)
+
+summary_lines <- c(
+  "WEEK 3 ANALYSIS SUMMARY",
+  paste("Dataset rows:", nrow(df)),
+  paste("Survival rate:", round(mean(df$Survived == "Yes") * 100, 2), "%"),
+  paste("Selected model by held-out ROC-AUC:", best_name),
+  "Model metrics are available in outputs/model_comparison.csv.",
+  "Interpret statistical associations and feature importance as non-causal."
+)
+writeLines(summary_lines, "outputs/analysis_summary.txt")

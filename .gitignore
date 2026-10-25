@@ -1,15 +1,9 @@
-# R / RStudio
+# R session files
 .Rhistory
 .RData
-.Ruserdata
 .Rproj.user/
-*.Rproj
 
-# OS / editor
+# OS/editor files
 .DS_Store
 Thumbs.db
 .vscode/
-
-# Temporary files
-*.tmp
-*.log
